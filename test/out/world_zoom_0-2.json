@@ -1,0 +1,10 @@
+{
+	"name": "OpenStreetMap Hillshade",
+	"description": "Tiles from OpenStreetMap",
+	"west": -180,
+	"south": -83.97925949886205,
+	"east": 180,
+	"north": 85.56806584676865,
+	"minzoom": 0,
+	"maxzoom": 2
+}

@@ -1,0 +1,35 @@
+{
+  "name": "mbtiles2abacus",
+  "version": "1.0.0",
+  "description": "MBTiles to Abacus",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "bin"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "bin": {
+    "mbtiles2abacus": "bin/mbtiles2abacus.js"
+  },
+  "author": "Denis Carriere <@DenisCarriere>",
+  "license": "MIT",
+  "dependencies": {
+    "d3-queue": "^3.0.7",
+    "global-mercator": "^2.8.4",
+    "mbtiles-offline": "^3.2.0",
+    "meow": "^3.7.0",
+    "mkdirp": "^0.5.1",
+    "progress": "^2.0.0",
+    "write-json-file": "^2.2.0"
+  },
+  "devDependencies": {
+    "tape": "^4.8.0"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  }
+}
