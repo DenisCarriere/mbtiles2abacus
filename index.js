@@ -4,8 +4,8 @@ const path = require('path')
 const mkdirp = require('mkdirp')
 const MBTiles = require('mbtiles-offline')
 const write = require('write-json-file')
-const {tileToQuadkey} = require('global-mercator')
-const {EventEmitter} = require('events')
+const tileToQuadkey = require('global-mercator').tileToQuadkey
+const EventEmitter = require('events').EventEmitter
 
 /**
  * MBTiles to Abacus
@@ -16,21 +16,24 @@ const {EventEmitter} = require('events')
  * @param {number} [options.interval=64] Update time interval in milliseconds
  * @returns {EventEmitter}
  */
-function mbtiles2abacus (mbtiles, output, options = {}) {
+function mbtiles2abacus (mbtiles, output, options) {
+  options = options || {}
   if (!fs.existsSync(mbtiles)) throw new Error('<mbtiles> does not exist')
 
   if (!output) {
-    const {dir, name} = path.parse(mbtiles)
+    const parse = path.parse(mbtiles)
+    const dir = parse.dir
+    const name = parse.name
     output = path.join(dir, name)
   }
 
-  const db = new MBTiles(mbtiles)
+  const db = new MBTiles(mbtiles, 'tms')
   const ee = new EventEmitter()
   const interval = options.interval || 64
-  let current = 0
-  let errors = 0
-  let total = 0
-  let timer
+  var current = 0
+  var errors = 0
+  var total = 0
+  var timer
 
   function prestart () {
     const q = d3.queue(1)
@@ -56,7 +59,11 @@ function mbtiles2abacus (mbtiles, output, options = {}) {
     // Update GeoPackage Metadata
     db.metadata().then(metadata => {
       // Save Metadata
-      const [west, south, east, north] = metadata.bounds
+      const west = metadata.bounds[0]
+      const south = metadata.bounds[1]
+      const east = metadata.bounds[2]
+      const north = metadata.bounds[3]
+
       write.sync(output + '.json', {
         name: metadata.name,
         description: metadata.description,
